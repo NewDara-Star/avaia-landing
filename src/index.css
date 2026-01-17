@@ -2,17 +2,17 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark slate base with warm amber accents */
+  /* Dark slate base with warm amber accents - WCAG AA compliant */
   --color-bg: #0a0b0d;
   --color-bg-elevated: #12141a;
   --color-bg-card: #1a1d26;
-  --color-text: #e8e6e3;
-  --color-text-muted: #8b8a87;
-  --color-accent: #e5a54b;
-  --color-accent-glow: #e5a54b40;
-  --color-success: #4ade80;
-  --color-error: #f87171;
-  --color-border: #2a2d38;
+  --color-text: #f0eeeb;  /* Increased from #e8e6e3 for better contrast */
+  --color-text-muted: #a8a7a4;  /* Increased from #8b8a87 for 4.5:1 ratio */
+  --color-accent: #f5b74d;  /* Brightened from #e5a54b for better contrast */
+  --color-accent-glow: #f5b74d40;
+  --color-success: #5ae98d;  /* Brightened */
+  --color-error: #ff8585;  /* Brightened */
+  --color-border: #3a3d48;  /* Brightened for visibility */
 }
 
 * {
