@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { Terminal, Settings, Zap, CheckCircle, ChevronRight, Copy, Github, ExternalLink } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import { Button } from '@/components/ui/button'
 
 function CodeBlock({ code, title }: { code: string; title?: string }) {
     const [copied, setCopied] = useState(false)
@@ -13,21 +15,21 @@ function CodeBlock({ code, title }: { code: string; title?: string }) {
     }
 
     return (
-        <div className="gradient-border">
+        <div className="glass-card rounded-xl overflow-hidden">
             {title && (
-                <div className="px-4 py-2 border-b border-[var(--color-border)] text-xs mono text-[var(--color-text-muted)]">
+                <div className="px-4 py-2 border-b border-border text-xs mono text-muted-foreground">
                     {title}
                 </div>
             )}
             <div className="relative p-4">
                 <button
                     onClick={copy}
-                    className="absolute top-4 right-4 p-2 hover:bg-[var(--color-bg)] rounded transition"
+                    className="absolute top-4 right-4 p-2 hover:bg-secondary rounded transition"
                 >
                     {copied ? (
-                        <CheckCircle size={16} className="text-[var(--color-success)]" />
+                        <CheckCircle size={16} className="text-green-500" />
                     ) : (
-                        <Copy size={16} className="text-[var(--color-text-muted)]" />
+                        <Copy size={16} className="text-muted-foreground" />
                     )}
                 </button>
                 <pre className="mono text-sm overflow-x-auto">
@@ -94,34 +96,24 @@ const tools = [
 
 export default function Docs() {
     return (
-        <div className="min-h-screen bg-[var(--color-bg)]">
-            {/* Header */}
-            <header className="border-b border-[var(--color-border)] py-4 px-6">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                    <Link to="/" className="text-2xl font-bold text-[var(--color-accent)]">Avaia</Link>
-                    <nav className="flex gap-6 text-sm">
-                        <Link to="/curriculum" className="hover:text-[var(--color-accent)] transition">Curriculum</Link>
-                        <Link to="/science" className="hover:text-[var(--color-accent)] transition">Science</Link>
-                        <Link to="/docs" className="text-[var(--color-accent)]">Docs</Link>
-                    </nav>
-                </div>
-            </header>
+        <div className="min-h-screen bg-background text-foreground">
+            <Header />
 
             {/* Hero */}
-            <section className="py-16 px-6 border-b border-[var(--color-border)]">
+            <section className="pt-32 pb-16 px-6 border-b border-border/50">
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl font-bold mb-4"
                     >
-                        <span className="text-[var(--color-accent)]">Documentation</span>
+                        <span className="gradient-text">Documentation</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-xl text-[var(--color-text-muted)] max-w-2xl mx-auto"
+                        className="text-xl text-muted-foreground max-w-2xl mx-auto"
                     >
                         Get started with Avaia in 5 minutes.
                     </motion.p>
@@ -134,10 +126,10 @@ export default function Docs() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, amount: 0 }}
+                        viewport={{ once: true }}
                         className="flex items-center gap-3 mb-8"
                     >
-                        <Terminal className="text-[var(--color-accent)]" size={24} />
+                        <Terminal className="text-primary" size={24} />
                         <h2 className="text-3xl font-bold">Quick Start</h2>
                     </motion.div>
 
@@ -147,16 +139,16 @@ export default function Docs() {
                                 key={step.number}
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, amount: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
                             >
                                 <div className="flex gap-4 items-start mb-3">
-                                    <div className="w-8 h-8 rounded-full bg-[var(--color-accent)] text-[var(--color-bg)] flex items-center justify-center font-bold flex-shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
                                         {step.number}
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="font-semibold">{step.title}</h3>
-                                        <p className="text-sm text-[var(--color-text-muted)]">{step.description}</p>
+                                        <p className="text-sm text-muted-foreground">{step.description}</p>
                                     </div>
                                 </div>
 
@@ -168,11 +160,11 @@ export default function Docs() {
 
                                 {step.config && (
                                     <div className="ml-12">
-                                        <p className="text-sm text-[var(--color-text-muted)] mb-3">
-                                            Add to <code className="mono text-[var(--color-accent)]">~/.claude/settings.json</code> or your Claude Code MCP config:
+                                        <p className="text-sm text-muted-foreground mb-3">
+                                            Add to <code className="mono text-primary">~/.claude/settings.json</code> or your Claude Code MCP config:
                                         </p>
                                         <CodeBlock code={mcpConfig} title="~/.claude/settings.json" />
-                                        <p className="text-xs text-[var(--color-text-muted)] mt-3">
+                                        <p className="text-xs text-muted-foreground mt-3">
                                             To find the path, run: <code className="mono">npm root -g</code>
                                         </p>
                                     </div>
@@ -184,15 +176,15 @@ export default function Docs() {
             </section>
 
             {/* Requirements */}
-            <section className="py-16 px-6 bg-[var(--color-bg-elevated)]">
+            <section className="py-16 px-6 bg-card/30">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, amount: 0 }}
+                        viewport={{ once: true }}
                         className="flex items-center gap-3 mb-8"
                     >
-                        <Settings className="text-[var(--color-accent)]" size={24} />
+                        <Settings className="text-primary" size={24} />
                         <h2 className="text-3xl font-bold">Requirements</h2>
                     </motion.div>
 
@@ -200,21 +192,21 @@ export default function Docs() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0 }}
-                            className="gradient-border p-6"
+                            viewport={{ once: true }}
+                            className="glass-card p-6 rounded-xl"
                         >
                             <h3 className="font-semibold mb-4">System</h3>
-                            <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                            <ul className="space-y-2 text-sm text-muted-foreground">
                                 <li className="flex items-center gap-2">
-                                    <CheckCircle size={14} className="text-[var(--color-success)]" />
+                                    <CheckCircle size={14} className="text-green-500" />
                                     Node.js 20+
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <CheckCircle size={14} className="text-[var(--color-success)]" />
+                                    <CheckCircle size={14} className="text-green-500" />
                                     Claude Code (for MCP integration)
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <CheckCircle size={14} className="text-[var(--color-success)]" />
+                                    <CheckCircle size={14} className="text-green-500" />
                                     ~50MB disk space
                                 </li>
                             </ul>
@@ -223,22 +215,22 @@ export default function Docs() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0 }}
+                            viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="gradient-border p-6"
+                            className="glass-card p-6 rounded-xl"
                         >
                             <h3 className="font-semibold mb-4">Data Storage</h3>
-                            <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
+                            <ul className="space-y-2 text-sm text-muted-foreground">
                                 <li className="flex items-center gap-2">
-                                    <code className="mono text-[var(--color-accent)]">~/.avaia/</code>
+                                    <code className="mono text-primary">~/.avaia/</code>
                                     Data directory
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <code className="mono text-[var(--color-accent)]">~/.avaia/avaia.db</code>
+                                    <code className="mono text-primary">~/.avaia/avaia.db</code>
                                     SQLite database
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <code className="mono text-[var(--color-accent)]">~/.avaia/system-prompt.md</code>
+                                    <code className="mono text-primary">~/.avaia/system-prompt.md</code>
                                     Persona config
                                 </li>
                             </ul>
@@ -253,14 +245,14 @@ export default function Docs() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, amount: 0 }}
+                        viewport={{ once: true }}
                         className="flex items-center gap-3 mb-8"
                     >
-                        <Zap className="text-[var(--color-accent)]" size={24} />
+                        <Zap className="text-primary" size={24} />
                         <h2 className="text-3xl font-bold">47 MCP Tools</h2>
                     </motion.div>
 
-                    <p className="text-[var(--color-text-muted)] mb-8">
+                    <p className="text-muted-foreground mb-8">
                         Avaia exposes 47 tools that give Claude pedagogical superpowers. Here's a sample by category:
                     </p>
 
@@ -270,14 +262,14 @@ export default function Docs() {
                                 key={category.category}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ delay: i * 0.05 }}
-                                className="gradient-border p-4"
+                                className="glass-card p-4 rounded-xl"
                             >
-                                <h3 className="mono text-[var(--color-accent)] text-sm mb-3">{category.category}</h3>
+                                <h3 className="mono text-primary text-sm mb-3">{category.category}</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {category.tools.map(tool => (
-                                        <span key={tool} className="mono text-xs px-2 py-1 bg-[var(--color-bg)] rounded">
+                                        <span key={tool} className="mono text-xs px-2 py-1 bg-secondary rounded">
                                             {tool}
                                         </span>
                                     ))}
@@ -289,14 +281,14 @@ export default function Docs() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, amount: 0 }}
+                        viewport={{ once: true }}
                         className="mt-8 text-center"
                     >
                         <a
                             href="https://github.com/NewDara-Star/avaia/tree/main/src/server/tools"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-[var(--color-accent)] hover:underline"
+                            className="inline-flex items-center gap-2 text-primary hover:underline"
                         >
                             View all tools on GitHub <ExternalLink size={14} />
                         </a>
@@ -305,15 +297,15 @@ export default function Docs() {
             </section>
 
             {/* CLI Commands */}
-            <section className="py-16 px-6 bg-[var(--color-bg-elevated)]">
+            <section className="py-16 px-6 bg-card/30">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, amount: 0 }}
+                        viewport={{ once: true }}
                         className="flex items-center gap-3 mb-8"
                     >
-                        <Terminal className="text-[var(--color-accent)]" size={24} />
+                        <Terminal className="text-primary" size={24} />
                         <h2 className="text-3xl font-bold">CLI Commands</h2>
                     </motion.div>
 
@@ -328,13 +320,13 @@ export default function Docs() {
                                 key={item.cmd}
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, amount: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="flex items-center gap-4 p-4 gradient-border"
+                                className="flex items-center gap-4 p-4 glass-card rounded-xl"
                             >
-                                <code className="mono text-[var(--color-accent)] font-semibold">{item.cmd}</code>
-                                <ChevronRight size={16} className="text-[var(--color-text-muted)]" />
-                                <span className="text-[var(--color-text-muted)]">{item.desc}</span>
+                                <code className="mono text-primary font-semibold">{item.cmd}</code>
+                                <ChevronRight size={16} className="text-muted-foreground" />
+                                <span className="text-muted-foreground">{item.desc}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -344,30 +336,22 @@ export default function Docs() {
             {/* CTA */}
             <section className="py-16 px-6 text-center">
                 <h2 className="text-3xl font-bold mb-4">Questions?</h2>
-                <p className="text-[var(--color-text-muted)] mb-8">
+                <p className="text-muted-foreground mb-8">
                     Open an issue on GitHub or dive into the source code.
                 </p>
                 <a
                     href="https://github.com/NewDara-Star/avaia"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold rounded-lg hover:brightness-110 transition glow"
                 >
-                    <Github size={20} />
-                    View on GitHub
+                    <Button size="lg" className="gap-2 glow-sm">
+                        <Github size={20} />
+                        View on GitHub
+                    </Button>
                 </a>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t border-[var(--color-border)] py-8 px-6 text-center text-[var(--color-text-muted)] text-sm">
-                <p>
-                    Built by{' '}
-                    <a href="https://github.com/NewDara-Star" className="text-[var(--color-accent)] hover:underline">
-                        @NewDara-Star
-                    </a>
-                    {' '}• MIT License • 2026
-                </p>
-            </footer>
+            <Footer />
         </div>
     )
 }

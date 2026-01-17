@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion'
 import { Calendar, CheckCircle, Code, Zap, BookOpen, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import { Button } from '@/components/ui/button'
 
 const projects = [
     {
@@ -91,34 +94,24 @@ const projects = [
 
 export default function Curriculum() {
     return (
-        <div className="min-h-screen bg-[var(--color-bg)]">
-            {/* Header */}
-            <header className="border-b border-[var(--color-border)] py-4 px-6">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                    <Link to="/" className="text-2xl font-bold text-[var(--color-accent)]">Avaia</Link>
-                    <nav className="flex gap-6 text-sm">
-                        <Link to="/curriculum" className="text-[var(--color-accent)]">Curriculum</Link>
-                        <Link to="/science" className="hover:text-[var(--color-accent)] transition">Science</Link>
-                        <Link to="/docs" className="hover:text-[var(--color-accent)] transition">Docs</Link>
-                    </nav>
-                </div>
-            </header>
+        <div className="min-h-screen bg-background text-foreground">
+            <Header />
 
             {/* Hero */}
-            <section className="py-16 px-6 border-b border-[var(--color-border)]">
+            <section className="pt-32 pb-16 px-6 border-b border-border/50">
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl font-bold mb-4"
                     >
-                        The <span className="text-[var(--color-accent)]">Curriculum</span>
+                        The <span className="gradient-text">Curriculum</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-xl text-[var(--color-text-muted)] max-w-2xl mx-auto"
+                        className="text-xl text-muted-foreground max-w-2xl mx-auto"
                     >
                         7 projects. 22-32 weeks. Each project produces a deployed, portfolio-worthy application.
                     </motion.p>
@@ -126,19 +119,19 @@ export default function Curriculum() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="flex justify-center gap-8 mt-8 text-sm"
+                        className="flex flex-wrap justify-center gap-8 mt-8 text-sm"
                     >
                         <div className="flex items-center gap-2">
-                            <Calendar className="text-[var(--color-accent)]" size={18} />
-                            <span className="text-[var(--color-text-muted)]">22-32 weeks total</span>
+                            <Calendar className="text-primary" size={18} />
+                            <span className="text-muted-foreground">22-32 weeks total</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Code className="text-[var(--color-accent)]" size={18} />
-                            <span className="text-[var(--color-text-muted)]">35 concepts</span>
+                            <Code className="text-primary" size={18} />
+                            <span className="text-muted-foreground">35 concepts</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Zap className="text-[var(--color-accent)]" size={18} />
-                            <span className="text-[var(--color-text-muted)]">6 sandbox exercises</span>
+                            <Zap className="text-primary" size={18} />
+                            <span className="text-muted-foreground">6 sandbox exercises</span>
                         </div>
                     </motion.div>
                 </div>
@@ -151,34 +144,32 @@ export default function Curriculum() {
                         <motion.div
                             key={project.number}
                             initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             transition={{ delay: i * 0.08, duration: 0.5 }}
-                            className="gradient-border p-8"
+                            className="glass-card p-8 rounded-xl"
                         >
                             <div className="flex items-start gap-6">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-[var(--color-accent)] text-[var(--color-bg)] flex items-center justify-center text-2xl font-bold">
+                                <div className="flex-shrink-0 w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
                                     {project.number}
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex items-center gap-4 mb-2">
                                         <h2 className="text-2xl font-bold">{project.title}</h2>
-                                        <span className="mono text-xs px-3 py-1 bg-[var(--color-bg)] rounded-full text-[var(--color-text-muted)]">
+                                        <span className="mono text-xs px-3 py-1 bg-secondary rounded-full text-muted-foreground">
                                             {project.duration}
                                         </span>
                                     </div>
-                                    <p className="text-[var(--color-text-muted)] mb-6">{project.description}</p>
+                                    <p className="text-muted-foreground mb-6">{project.description}</p>
 
                                     {/* Sandbox callout if exists */}
                                     {project.sandbox && (
-                                        <div
-                                            className="mb-6 p-4 rounded-lg border border-amber-500/30"
-                                            style={{ backgroundColor: 'rgba(245, 183, 77, 0.12)' }}
-                                        >
-                                            <div className="flex items-center gap-2 text-[var(--color-accent)] mb-2">
+                                        <div className="mb-6 p-4 rounded-lg bg-primary/10 border border-primary/20">
+                                            <div className="flex items-center gap-2 text-primary mb-2">
                                                 <Zap size={16} />
                                                 <span className="mono text-sm font-semibold">SANDBOX: {project.sandbox.name}</span>
                                             </div>
-                                            <p className="text-sm text-[var(--color-text)]">
+                                            <p className="text-sm text-foreground">
                                                 <strong>Before learning {project.sandbox.concept}:</strong> "{project.sandbox.problem}"
                                             </p>
                                         </div>
@@ -186,14 +177,14 @@ export default function Curriculum() {
 
                                     {/* Milestones */}
                                     <div className="mb-4">
-                                        <h3 className="text-sm font-semibold text-[var(--color-text-muted)] mb-2 flex items-center gap-2">
+                                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
                                             <BookOpen size={14} />
                                             Milestones
                                         </h3>
                                         <div className="flex flex-wrap gap-2">
                                             {project.milestones.map((m, j) => (
-                                                <div key={j} className="flex items-center gap-1 text-sm px-3 py-1 bg-[var(--color-bg)] rounded-full">
-                                                    <ChevronRight size={14} className="text-[var(--color-accent)]" />
+                                                <div key={j} className="flex items-center gap-1 text-sm px-3 py-1 bg-secondary rounded-full">
+                                                    <ChevronRight size={14} className="text-primary" />
                                                     {m}
                                                 </div>
                                             ))}
@@ -202,13 +193,13 @@ export default function Curriculum() {
 
                                     {/* Concepts */}
                                     <div>
-                                        <h3 className="text-sm font-semibold text-[var(--color-text-muted)] mb-2 flex items-center gap-2">
+                                        <h3 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
                                             <CheckCircle size={14} />
                                             Concepts Learned
                                         </h3>
                                         <div className="flex flex-wrap gap-2">
                                             {project.concepts.map((c, j) => (
-                                                <span key={j} className="mono text-xs px-2 py-1 text-[var(--color-accent)] border border-[var(--color-accent)] border-opacity-30 rounded">
+                                                <span key={j} className="mono text-xs px-2 py-1 text-primary border border-primary/30 rounded">
                                                     {c}
                                                 </span>
                                             ))}
@@ -222,30 +213,20 @@ export default function Curriculum() {
             </section>
 
             {/* CTA */}
-            <section className="py-16 px-6 bg-[var(--color-bg-elevated)] text-center">
+            <section className="py-16 px-6 bg-card/30 text-center">
                 <h2 className="text-3xl font-bold mb-4">Ready to Start?</h2>
-                <p className="text-[var(--color-text-muted)] mb-8">
+                <p className="text-muted-foreground mb-8">
                     Install Avaia and begin with Project 1: Memory Game
                 </p>
-                <Link
-                    to="/docs"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold rounded-lg hover:brightness-110 transition glow"
-                >
-                    Get Started
-                    <ChevronRight size={18} />
+                <Link to="/docs">
+                    <Button size="lg" className="gap-2 glow-sm">
+                        Get Started
+                        <ChevronRight size={18} />
+                    </Button>
                 </Link>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t border-[var(--color-border)] py-8 px-6 text-center text-[var(--color-text-muted)] text-sm">
-                <p>
-                    Built by{' '}
-                    <a href="https://github.com/NewDara-Star" className="text-[var(--color-accent)] hover:underline">
-                        @NewDara-Star
-                    </a>
-                    {' '}• MIT License • 2026
-                </p>
-            </footer>
+            <Footer />
         </div>
     )
 }

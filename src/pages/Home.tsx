@@ -1,14 +1,25 @@
 import { motion } from 'framer-motion'
-import { Brain, GitBranch, Zap, Shield, RefreshCw, Heart, Github, Terminal, ChevronRight, Monitor } from 'lucide-react'
+import { Brain, GitBranch, Zap, Shield, RefreshCw, Heart, Github, Terminal, ChevronRight, Monitor, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { ProductDemo } from '@/components/ProductDemo'
+import { Button } from '@/components/ui/button'
 
 const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
         opacity: 1,
         y: 0,
-        transition: { delay: i * 0.1, duration: 0.6 }
+        transition: { delay: i * 0.1, duration: 0.6, ease: [0.0, 0.0, 0.2, 1] as const }
     })
+}
+
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
 }
 
 const principles = [
@@ -59,96 +70,127 @@ const stats = [
 
 export default function Home() {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-background text-foreground">
             {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)] bg-opacity-80 backdrop-blur-md py-4 px-6">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                    <Link to="/" className="text-2xl font-bold text-[var(--color-accent)]">Avaia</Link>
-                    <nav className="flex gap-6 text-sm">
-                        <Link to="/curriculum" className="hover:text-[var(--color-accent)] transition">Curriculum</Link>
-                        <Link to="/science" className="hover:text-[var(--color-accent)] transition">Science</Link>
-                        <Link to="/docs" className="hover:text-[var(--color-accent)] transition">Docs</Link>
+            <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+                    <Link to="/" className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-primary-foreground" />
+                        </div>
+                        <span className="text-xl font-bold gradient-text">Avaia</span>
+                    </Link>
+
+                    <nav className="hidden md:flex items-center gap-8 text-sm">
+                        <Link to="/curriculum" className="text-muted-foreground hover:text-foreground transition-colors">
+                            Curriculum
+                        </Link>
+                        <Link to="/science" className="text-muted-foreground hover:text-foreground transition-colors">
+                            Science
+                        </Link>
+                        <Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
+                            Docs
+                        </Link>
                     </nav>
+
+                    <div className="flex items-center gap-4">
+                        <ThemeToggle />
+                        <a
+                            href="https://github.com/NewDara-Star/avaia"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hidden sm:flex"
+                        >
+                            <Button variant="outline" size="sm" className="gap-2">
+                                <Github className="w-4 h-4" />
+                                GitHub
+                            </Button>
+                        </a>
+                    </div>
                 </div>
             </header>
 
             {/* Hero */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-16">
-                {/* Ambient gradients */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-accent)] opacity-5 rounded-full blur-3xl" />
-                    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-amber-600 opacity-5 rounded-full blur-3xl" />
+            <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-24 pb-12">
+                {/* Ambient Background */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div className="ambient-orb ambient-orb-primary w-[600px] h-[600px] top-[-20%] right-[-10%]" />
+                    <div className="ambient-orb ambient-orb-secondary w-[400px] h-[400px] bottom-[10%] left-[-5%]" />
                 </div>
 
-                <div className="max-w-4xl mx-auto text-center relative z-10">
+                <div className="max-w-6xl mx-auto relative z-10">
                     <motion.div
                         initial="hidden"
                         animate="visible"
-                        className="space-y-8"
+                        variants={staggerContainer}
+                        className="text-center mb-16"
                     >
-                        <motion.p
-                            custom={0}
+                        <motion.div
                             variants={fadeIn}
-                            className="mono text-[var(--color-accent)] text-sm tracking-widest uppercase"
+                            custom={0}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8"
                         >
-                            Open Source • MCP Server for Claude
-                        </motion.p>
+                            <Sparkles className="w-4 h-4" />
+                            <span>Open Source • MCP Server for Claude</span>
+                        </motion.div>
 
                         <motion.h1
-                            custom={1}
                             variants={fadeIn}
-                            className="text-6xl md:text-8xl font-bold tracking-tight"
+                            custom={1}
+                            className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
                         >
-                            <span className="text-[var(--color-accent)]">Avaia</span>
+                            The AI that teaches
+                            <br />
+                            <span className="gradient-text">programming properly</span>
                         </motion.h1>
 
                         <motion.p
-                            custom={2}
                             variants={fadeIn}
-                            className="text-2xl md:text-3xl text-[var(--color-text-muted)] max-w-2xl mx-auto"
+                            custom={2}
+                            className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
                         >
-                            The AI that teaches programming <em>properly</em>.
-                            <br />
-                            No hand-holding. No shortcuts. Just lasting knowledge.
+                            No hand-holding. No shortcuts. Just lasting knowledge through
+                            spaced repetition, productive failure, and real projects.
                         </motion.p>
 
                         <motion.div
-                            custom={3}
                             variants={fadeIn}
-                            className="flex flex-wrap justify-center gap-4 pt-4"
+                            custom={3}
+                            className="flex flex-wrap justify-center gap-4"
                         >
                             <a
                                 href="https://github.com/NewDara-Star/avaia"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold rounded-lg hover:brightness-110 transition glow"
                             >
-                                <Github size={20} />
-                                View on GitHub
+                                <Button size="lg" className="gap-2 glow-sm">
+                                    <Github className="w-5 h-5" />
+                                    View on GitHub
+                                </Button>
                             </a>
-                            <Link
-                                to="/science"
-                                className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-border)] rounded-lg hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
-                            >
-                                Learn the Philosophy
-                                <ChevronRight size={18} />
+                            <Link to="/science">
+                                <Button variant="outline" size="lg" className="gap-2">
+                                    Learn the Philosophy
+                                    <ChevronRight className="w-4 h-4" />
+                                </Button>
                             </Link>
                         </motion.div>
 
                         <motion.div
-                            custom={4}
                             variants={fadeIn}
-                            className="pt-8"
+                            custom={4}
+                            className="mt-10"
                         >
-                            <div className="gradient-border inline-block p-6 text-left">
-                                <code className="mono text-sm text-[var(--color-text-muted)] block">
-                                    <span className="text-[var(--color-accent)]">$</span> npm install -g @newdara/avaia
-                                    <br />
-                                    <span className="text-[var(--color-accent)]">$</span> avaia init && avaia seed
+                            <div className="inline-flex items-center gap-3 glass-card px-6 py-4 rounded-xl">
+                                <code className="font-mono text-sm text-muted-foreground">
+                                    <span className="text-primary">$</span> npm install -g @newdara/avaia
                                 </code>
                             </div>
                         </motion.div>
                     </motion.div>
+
+                    {/* Product Demo */}
+                    <ProductDemo />
                 </div>
 
                 {/* Scroll indicator */}
@@ -157,28 +199,35 @@ export default function Home() {
                     animate={{ y: [0, 8, 0] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                 >
-                    <div className="w-6 h-10 border-2 border-[var(--color-border)] rounded-full flex justify-center pt-2">
-                        <div className="w-1 h-2 bg-[var(--color-accent)] rounded-full" />
+                    <div className="w-6 h-10 border-2 border-border rounded-full flex justify-center pt-2">
+                        <div className="w-1.5 h-3 bg-primary rounded-full" />
                     </div>
                 </motion.div>
             </section>
 
             {/* Stats bar */}
-            <section className="border-y border-[var(--color-border)] py-12">
-                <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {stats.map((stat, i) => (
-                        <motion.div
-                            key={stat.label}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            viewport={{ once: true }}
-                            className="text-center"
-                        >
-                            <div className="text-4xl font-bold text-[var(--color-accent)] mono">{stat.value}</div>
-                            <div className="text-[var(--color-text-muted)] text-sm mt-1">{stat.label}</div>
-                        </motion.div>
-                    ))}
+            <section className="border-y border-border/50 py-16 bg-card/30">
+                <div className="max-w-6xl mx-auto px-6">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-8"
+                    >
+                        {stats.map((stat) => (
+                            <motion.div
+                                key={stat.label}
+                                variants={fadeIn}
+                                className="text-center"
+                            >
+                                <div className="text-4xl lg:text-5xl font-bold text-primary font-mono mb-2">
+                                    {stat.value}
+                                </div>
+                                <div className="text-muted-foreground text-sm">{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
                 </div>
             </section>
 
@@ -191,10 +240,10 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                            Built on <span className="text-[var(--color-accent)]">Science</span>, Not Vibes
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                            Built on <span className="gradient-text">Science</span>, Not Vibes
                         </h2>
-                        <p className="text-xl text-[var(--color-text-muted)] max-w-2xl mx-auto">
+                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             Every feature is grounded in decades of cognitive science research.
                             This isn't another chatbot — it's a pedagogically-informed learning system.
                         </p>
@@ -208,12 +257,14 @@ export default function Home() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="gradient-border p-6 hover:scale-[1.02] transition-transform"
+                                className="group glass-card p-6 rounded-xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
                             >
-                                <p.icon className="text-[var(--color-accent)] mb-4" size={28} />
-                                <h3 className="text-xl font-semibold mb-2">{p.title}</h3>
-                                <p className="text-[var(--color-text-muted)] mb-4">{p.desc}</p>
-                                <p className="mono text-xs text-[var(--color-accent)] opacity-70">{p.research}</p>
+                                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <p.icon className="w-6 h-6 text-primary" />
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
+                                <p className="text-muted-foreground text-sm mb-4">{p.desc}</p>
+                                <p className="font-mono text-xs text-primary/70">{p.research}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -224,18 +275,18 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mt-12"
                     >
-                        <Link
-                            to="/science"
-                            className="inline-flex items-center gap-2 text-[var(--color-accent)] hover:underline"
-                        >
-                            Deep dive into the research <ChevronRight size={18} />
+                        <Link to="/science">
+                            <Button variant="ghost" className="gap-2 text-primary">
+                                Deep dive into the research
+                                <ChevronRight className="w-4 h-4" />
+                            </Button>
                         </Link>
                     </motion.div>
                 </div>
             </section>
 
             {/* How It Works */}
-            <section className="py-24 px-6 bg-[var(--color-bg-elevated)]">
+            <section className="py-24 px-6 bg-card/30">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -243,8 +294,8 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                            How It <span className="text-[var(--color-accent)]">Actually Works</span>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                            How It <span className="gradient-text">Actually Works</span>
                         </h2>
                     </motion.div>
 
@@ -284,12 +335,12 @@ export default function Home() {
                                 transition={{ delay: i * 0.1 }}
                                 className="flex gap-6 items-start"
                             >
-                                <div className="mono text-4xl font-bold text-[var(--color-accent)] opacity-40 w-16 flex-shrink-0">
+                                <div className="font-mono text-4xl font-bold text-primary/30 w-16 flex-shrink-0">
                                     {item.step}
                                 </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
-                                    <p className="text-[var(--color-text-muted)]">{item.desc}</p>
+                                <div className="glass-card p-5 rounded-xl flex-1">
+                                    <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                                    <p className="text-muted-foreground text-sm">{item.desc}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -301,17 +352,17 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mt-12"
                     >
-                        <Link
-                            to="/curriculum"
-                            className="inline-flex items-center gap-2 text-[var(--color-accent)] hover:underline"
-                        >
-                            View the full curriculum <ChevronRight size={18} />
+                        <Link to="/curriculum">
+                            <Button variant="ghost" className="gap-2 text-primary">
+                                View the full curriculum
+                                <ChevronRight className="w-4 h-4" />
+                            </Button>
                         </Link>
                     </motion.div>
                 </div>
             </section>
 
-            {/* NEW: Native GUI App */}
+            {/* Native GUI */}
             <section className="py-24 px-6">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
@@ -320,10 +371,10 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                            Native <span className="text-[var(--color-accent)]">macOS App</span>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                            Native <span className="gradient-text">macOS App</span>
                         </h2>
-                        <p className="text-xl text-[var(--color-text-muted)]">
+                        <p className="text-lg text-muted-foreground">
                             A beautiful ChatGPT-like interface for your tutoring sessions
                         </p>
                     </motion.div>
@@ -332,31 +383,48 @@ export default function Home() {
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="gradient-border p-8"
+                        className="glass-card p-8 rounded-2xl"
                     >
                         <div className="flex items-center gap-3 mb-6">
-                            <Monitor className="text-[var(--color-accent)]" size={28} />
-                            <h3 className="text-2xl font-bold">Avaia.app</h3>
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center">
+                                <Monitor className="w-6 h-6 text-primary-foreground" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold">Avaia.app</h3>
+                                <p className="text-sm text-muted-foreground">Native experience</p>
+                            </div>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-8">
                             <div>
-                                <h4 className="font-semibold mb-3 text-[var(--color-accent)]">Features</h4>
-                                <ul className="space-y-2 text-[var(--color-text-muted)]">
-                                    <li>• <span className="text-[var(--color-text)]">Chat interface</span> — Like ChatGPT, but for learning</li>
-                                    <li>• <span className="text-[var(--color-text)]">Suggestion cards</span> — Quick actions to start learning</li>
-                                    <li>• <span className="text-[var(--color-text)]">Markdown rendering</span> — Code blocks with syntax highlighting</li>
-                                    <li>• <span className="text-[var(--color-text)]">Real-time streaming</span> — See responses as they come</li>
+                                <h4 className="font-semibold mb-3 text-primary">Features</h4>
+                                <ul className="space-y-2 text-sm text-muted-foreground">
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">Chat interface</strong> — Like ChatGPT, but for learning</span>
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">Suggestion cards</strong> — Quick actions to start learning</span>
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">Markdown rendering</strong> — Code blocks with syntax highlighting</span>
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">Real-time streaming</strong> — See responses as they come</span>
+                                    </li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 className="font-semibold mb-3 text-[var(--color-accent)]">Quick Start</h4>
-                                <div className="mono text-sm space-y-1 text-[var(--color-text-muted)]">
-                                    <p><span className="text-[var(--color-accent)]">$</span> cd gui</p>
-                                    <p><span className="text-[var(--color-accent)]">$</span> ./run.sh</p>
-                                    <p className="pt-2 text-xs">Opens at http://127.0.0.1:5050</p>
-                                    <p className="pt-2 text-xs italic">Or build the native app:</p>
-                                    <p><span className="text-[var(--color-accent)]">$</span> ./build.sh</p>
+                                <h4 className="font-semibold mb-3 text-primary">Quick Start</h4>
+                                <div className="glass-card p-4 rounded-lg font-mono text-sm space-y-1">
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">cd gui</span></p>
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">./run.sh</span></p>
+                                    <p className="pt-2 text-xs text-muted-foreground/70">Opens at http://127.0.0.1:5050</p>
+                                    <p className="pt-2 text-xs text-muted-foreground/70 italic">Or build the native app:</p>
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">./build.sh</span></p>
                                 </div>
                             </div>
                         </div>
@@ -365,7 +433,7 @@ export default function Home() {
             </section>
 
             {/* Technical */}
-            <section className="py-24 px-6 bg-[var(--color-bg-elevated)]">
+            <section className="py-24 px-6 bg-card/30">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -373,10 +441,10 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                            Under the <span className="text-[var(--color-accent)]">Hood</span>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                            Under the <span className="gradient-text">Hood</span>
                         </h2>
-                        <p className="text-xl text-[var(--color-text-muted)]">
+                        <p className="text-lg text-muted-foreground">
                             An MCP server that gives Claude pedagogical superpowers
                         </p>
                     </motion.div>
@@ -385,31 +453,55 @@ export default function Home() {
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="gradient-border p-8"
+                        className="glass-card p-8 rounded-2xl"
                     >
                         <div className="grid md:grid-cols-2 gap-8">
                             <div>
-                                <h3 className="mono text-[var(--color-accent)] mb-4 flex items-center gap-2">
-                                    <Terminal size={18} />
+                                <h3 className="font-mono text-primary mb-4 flex items-center gap-2">
+                                    <Terminal className="w-5 h-5" />
                                     Architecture
                                 </h3>
-                                <ul className="space-y-2 text-[var(--color-text-muted)]">
-                                    <li>• <span className="text-[var(--color-text)]">MCP Server</span> — 47 pedagogical tools</li>
-                                    <li>• <span className="text-[var(--color-text)]">SQLite</span> — Local learner state at ~/.avaia</li>
-                                    <li>• <span className="text-[var(--color-text)]">FSRS-5</span> — State-of-the-art spaced repetition</li>
-                                    <li>• <span className="text-[var(--color-text)]">TypeScript</span> — Strict types, Zod validation</li>
+                                <ul className="space-y-3 text-sm text-muted-foreground">
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">MCP Server</strong> — 47 pedagogical tools</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">SQLite</strong> — Local learner state at ~/.avaia</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">FSRS-5</strong> — State-of-the-art spaced repetition</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground">TypeScript</strong> — Strict types, Zod validation</span>
+                                    </li>
                                 </ul>
                             </div>
                             <div>
-                                <h3 className="mono text-[var(--color-accent)] mb-4 flex items-center gap-2">
-                                    <Brain size={18} />
+                                <h3 className="font-mono text-primary mb-4 flex items-center gap-2">
+                                    <Brain className="w-5 h-5" />
                                     Data Tracked
                                 </h3>
-                                <ul className="space-y-2 text-[var(--color-text-muted)]">
-                                    <li>• <span className="text-[var(--color-text)]">stability</span> — Days until 90% forgotten</li>
-                                    <li>• <span className="text-[var(--color-text)]">difficulty</span> — Personalized per concept</li>
-                                    <li>• <span className="text-[var(--color-text)]">independence_score</span> — Hint level to give</li>
-                                    <li>• <span className="text-[var(--color-text)]">stubborn_bugs</span> — High-confidence errors</li>
+                                <ul className="space-y-3 text-sm text-muted-foreground">
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground font-mono">stability</strong> — Days until 90% forgotten</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground font-mono">difficulty</strong> — Personalized per concept</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground font-mono">independence_score</strong> — Hint level to give</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                        <span><strong className="text-foreground font-mono">stubborn_bugs</strong> — High-confidence errors</span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -421,38 +513,42 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mt-8"
                     >
-                        <Link
-                            to="/docs"
-                            className="inline-flex items-center gap-2 text-[var(--color-accent)] hover:underline"
-                        >
-                            Read the documentation <ChevronRight size={18} />
+                        <Link to="/docs">
+                            <Button variant="ghost" className="gap-2 text-primary">
+                                Read the documentation
+                                <ChevronRight className="w-4 h-4" />
+                            </Button>
                         </Link>
                     </motion.div>
                 </div>
             </section>
 
             {/* CTA */}
-            <section className="py-24 px-6 bg-[var(--color-bg-elevated)]">
-                <div className="max-w-2xl mx-auto text-center">
+            <section className="py-24 px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
+
+                <div className="max-w-2xl mx-auto text-center relative z-10">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-4xl font-bold mb-4">Ready to Learn JavaScript <em>Properly</em>?</h2>
-                        <p className="text-[var(--color-text-muted)] mb-8">
+                        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                            Ready to Learn JavaScript <em className="not-italic gradient-text">Properly</em>?
+                        </h2>
+                        <p className="text-muted-foreground mb-8">
                             Open source. Free forever. Because education shouldn't be paywalled.
                         </p>
 
-                        <div className="gradient-border p-8 text-left mb-8">
-                            <code className="mono text-sm block space-y-1">
-                                <div><span className="text-[var(--color-text-muted)]"># Install globally</span></div>
-                                <div><span className="text-[var(--color-accent)]">$</span> npm install -g @newdara/avaia</div>
-                                <div className="pt-2"><span className="text-[var(--color-text-muted)]"># Initialize and seed curriculum</span></div>
-                                <div><span className="text-[var(--color-accent)]">$</span> avaia init</div>
-                                <div><span className="text-[var(--color-accent)]">$</span> avaia seed</div>
-                                <div className="pt-2"><span className="text-[var(--color-text-muted)]"># Configure Claude Code MCP, then start</span></div>
-                                <div><span className="text-[var(--color-accent)]">$</span> avaia</div>
+                        <div className="glass-card p-8 rounded-2xl text-left mb-8">
+                            <code className="font-mono text-sm block space-y-2">
+                                <div className="text-muted-foreground"># Install globally</div>
+                                <div><span className="text-primary">$</span> npm install -g @newdara/avaia</div>
+                                <div className="pt-3 text-muted-foreground"># Initialize and seed curriculum</div>
+                                <div><span className="text-primary">$</span> avaia init</div>
+                                <div><span className="text-primary">$</span> avaia seed</div>
+                                <div className="pt-3 text-muted-foreground"># Configure Claude Code MCP, then start</div>
+                                <div><span className="text-primary">$</span> avaia</div>
                             </code>
                         </div>
 
@@ -460,30 +556,31 @@ export default function Home() {
                             href="https://github.com/NewDara-Star/avaia"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold rounded-lg hover:brightness-110 transition text-lg glow"
                         >
-                            <Github size={22} />
-                            Get Started on GitHub
+                            <Button size="lg" className="gap-2 glow">
+                                <Github className="w-5 h-5" />
+                                Get Started on GitHub
+                            </Button>
                         </a>
                     </motion.div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="border-t border-[var(--color-border)] py-8 px-6">
+            <footer className="border-t border-border/50 py-8 px-6">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p className="text-[var(--color-text-muted)] text-sm">
+                    <p className="text-muted-foreground text-sm">
                         Built by{' '}
-                        <a href="https://github.com/NewDara-Star" className="text-[var(--color-accent)] hover:underline">
+                        <a href="https://github.com/NewDara-Star" className="text-primary hover:underline">
                             @NewDara-Star
                         </a>
                         {' '}• MIT License • 2026
                     </p>
-                    <nav className="flex gap-6 text-sm text-[var(--color-text-muted)]">
-                        <Link to="/curriculum" className="hover:text-[var(--color-accent)] transition">Curriculum</Link>
-                        <Link to="/science" className="hover:text-[var(--color-accent)] transition">Science</Link>
-                        <Link to="/docs" className="hover:text-[var(--color-accent)] transition">Docs</Link>
-                        <a href="https://github.com/NewDara-Star/avaia" className="hover:text-[var(--color-accent)] transition">GitHub</a>
+                    <nav className="flex gap-6 text-sm text-muted-foreground">
+                        <Link to="/curriculum" className="hover:text-foreground transition-colors">Curriculum</Link>
+                        <Link to="/science" className="hover:text-foreground transition-colors">Science</Link>
+                        <Link to="/docs" className="hover:text-foreground transition-colors">Docs</Link>
+                        <a href="https://github.com/NewDara-Star/avaia" className="hover:text-foreground transition-colors">GitHub</a>
                     </nav>
                 </div>
             </footer>
