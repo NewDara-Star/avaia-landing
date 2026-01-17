@@ -27,37 +27,43 @@ const principles = [
         icon: Brain,
         title: "Invisible Spaced Repetition",
         desc: "FSRS-5 algorithm ensures you never forget. Reviews feel like natural check-ins, not flashcard drills.",
-        research: "Bjork (1994) Desirable Difficulties"
+        research: "Bjork (1994) Desirable Difficulties",
+        image: "/images/3d-memory.png"
     },
     {
         icon: Zap,
         title: "Productive Failure",
         desc: "Struggle with sandbox exercises before instruction. The confusion creates slots for knowledge to stick.",
-        research: "Kapur (2008) Productive Failure"
+        research: "Kapur (2008) Productive Failure",
+        image: "/images/3d-puzzle.png"
     },
     {
         icon: Shield,
         title: "Anti-Sycophancy",
         desc: "No 'Great question!' or premature solutions. Real teaching means letting you work through problems.",
-        research: "Chi (1989) Active Learning"
+        research: "Chi (1989) Active Learning",
+        image: "/images/3d-code.png"
     },
     {
         icon: RefreshCw,
         title: "Stubborn Bug Detection",
         desc: "High confidence + wrong answer? That gets special treatment. Stubborn misconceptions need targeted remediation.",
-        research: "Hypercorrection Effect"
+        research: "Hypercorrection Effect",
+        image: "/images/3d-growth.png"
     },
     {
         icon: Heart,
         title: "Emotional Intelligence",
         desc: "Timing patterns reveal frustration and disengagement. The system adapts before you give up.",
-        research: "Affective Computing"
+        research: "Affective Computing",
+        image: "/images/3d-rocket.png"
     },
     {
         icon: GitBranch,
         title: "Project-First Learning",
         desc: "Build 7 real projects. Concepts are discovered just-in-time, not crammed ahead of time.",
-        research: "Situated Cognition (Lave)"
+        research: "Situated Cognition (Lave)",
+        image: "/images/3d-brain.png"
     }
 ]
 
@@ -220,14 +226,27 @@ export default function Home() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="group glass-card p-6 rounded-xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
+                                className="group glass-card rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                    <p.icon className="w-6 h-6 text-primary" />
+                                {/* Background Image */}
+                                <div className="h-32 relative overflow-hidden">
+                                    <img
+                                        src={p.image}
+                                        alt={p.title}
+                                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/80 to-transparent" />
                                 </div>
-                                <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
-                                <p className="text-muted-foreground text-sm mb-4">{p.desc}</p>
-                                <p className="font-mono text-xs text-primary/70">{p.research}</p>
+
+                                {/* Content */}
+                                <div className="p-6 -mt-8 relative">
+                                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <p.icon className="w-6 h-6 text-primary" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
+                                    <p className="text-muted-foreground text-sm mb-4">{p.desc}</p>
+                                    <p className="font-mono text-xs text-primary/70">{p.research}</p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>

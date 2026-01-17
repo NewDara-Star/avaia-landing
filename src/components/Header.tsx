@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Github, Sparkles, Menu, X } from 'lucide-react'
-import { ThemeToggle } from './ThemeToggle'
 import { Button } from './ui/button'
 import { useState } from 'react'
 
@@ -41,7 +40,6 @@ export function Header() {
                 </nav>
 
                 <div className="flex items-center gap-2 sm:gap-4">
-                    <ThemeToggle />
                     <a
                         href="https://github.com/NewDara-Star/avaia"
                         target="_blank"
