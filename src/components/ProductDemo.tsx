@@ -85,12 +85,12 @@ function Message({ role, content, isTyping = false }: {
             className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-3`}
         >
             {!isUser && (
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center text-primary-foreground text-xs font-bold mr-2 flex-shrink-0">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center text-primary-foreground text-xs font-bold mr-2 flex-shrink-0">
                     A
                 </div>
             )}
             <div
-                className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${isUser
+                className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 sm:px-4 py-2 text-sm leading-relaxed ${isUser
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-transparent'
                     }`}
@@ -157,10 +157,10 @@ export function ProductDemo() {
                 <div className="w-14" /> {/* Spacer for centering */}
             </div>
 
-            {/* App Layout */}
-            <div className="flex h-[480px] bg-background">
-                {/* Sidebar */}
-                <div className="w-56 border-r border-border bg-card/50 flex flex-col">
+            {/* App Layout - responsive height and sidebar hidden on mobile */}
+            <div className="flex h-[350px] sm:h-[420px] md:h-[480px] bg-background">
+                {/* Sidebar - hidden on mobile */}
+                <div className="hidden md:flex w-48 lg:w-56 border-r border-border bg-card/50 flex-col">
                     <div className="p-3">
                         <button className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary hover:bg-accent text-sm font-medium transition-colors">
                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -194,9 +194,9 @@ export function ProductDemo() {
                 </div>
 
                 {/* Chat Area */}
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col min-w-0">
                     {/* Messages */}
-                    <div className="flex-1 overflow-y-auto p-4">
+                    <div className="flex-1 overflow-y-auto p-3 sm:p-4">
                         <AnimatePresence>
                             {demoMessages.slice(0, visibleMessages).map((msg, i) => (
                                 <Message key={i} role={msg.role} content={msg.content} />
@@ -208,27 +208,27 @@ export function ProductDemo() {
                     </div>
 
                     {/* Input */}
-                    <div className="p-4 border-t border-border">
-                        <div className="flex items-center gap-2 bg-secondary rounded-2xl px-4 py-3">
+                    <div className="p-3 sm:p-4 border-t border-border">
+                        <div className="flex items-center gap-2 bg-secondary rounded-2xl px-3 sm:px-4 py-2 sm:py-3">
                             <input
                                 type="text"
                                 placeholder="Message Avaia..."
-                                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground min-w-0"
                                 disabled
                             />
-                            <button className="p-2 rounded-full hover:bg-accent transition-colors" disabled>
-                                <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <button className="p-1.5 sm:p-2 rounded-full hover:bg-accent transition-colors flex-shrink-0" disabled>
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                                     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                                 </svg>
                             </button>
-                            <button className="p-2 rounded-full bg-primary text-primary-foreground" disabled>
-                                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                            <button className="p-1.5 sm:p-2 rounded-full bg-primary text-primary-foreground flex-shrink-0" disabled>
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                                 </svg>
                             </button>
                         </div>
-                        <p className="text-xs text-muted-foreground text-center mt-2">
+                        <p className="text-xs text-muted-foreground text-center mt-2 hidden sm:block">
                             Avaia uses spaced repetition to ensure lasting knowledge
                         </p>
                     </div>

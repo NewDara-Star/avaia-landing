@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Brain, GitBranch, Zap, Shield, RefreshCw, Heart, Github, Terminal, ChevronRight, Monitor, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { Header } from '@/components/Header'
 import { ProductDemo } from '@/components/ProductDemo'
 import { Button } from '@/components/ui/button'
 
@@ -71,44 +71,7 @@ const stats = [
 export default function Home() {
     return (
         <div className="min-h-screen bg-background text-foreground">
-            {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-                    <Link to="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center">
-                            <Sparkles className="w-4 h-4 text-primary-foreground" />
-                        </div>
-                        <span className="text-xl font-bold gradient-text">Avaia</span>
-                    </Link>
-
-                    <nav className="hidden md:flex items-center gap-8 text-sm">
-                        <Link to="/curriculum" className="text-muted-foreground hover:text-foreground transition-colors">
-                            Curriculum
-                        </Link>
-                        <Link to="/science" className="text-muted-foreground hover:text-foreground transition-colors">
-                            Science
-                        </Link>
-                        <Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
-                            Docs
-                        </Link>
-                    </nav>
-
-                    <div className="flex items-center gap-4">
-                        <ThemeToggle />
-                        <a
-                            href="https://github.com/NewDara-Star/avaia"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hidden sm:flex"
-                        >
-                            <Button variant="outline" size="sm" className="gap-2">
-                                <Github className="w-4 h-4" />
-                                GitHub
-                            </Button>
-                        </a>
-                    </div>
-                </div>
-            </header>
+            <Header />
 
             {/* Hero */}
             <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-24 pb-12">
