@@ -85,14 +85,14 @@ function Message({ role, content, isTyping = false }: {
             className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-3`}
         >
             {!isUser && (
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center text-primary-foreground text-xs font-bold mr-2 flex-shrink-0">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center text-primary-foreground text-xs font-bold mr-2 flex-shrink-0">
                     A
                 </div>
             )}
             <div
                 className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 sm:px-4 py-2 text-sm leading-relaxed ${isUser
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-transparent'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-transparent'
                     }`}
             >
                 {isTyping ? <TypingIndicator /> : renderContent(content)}

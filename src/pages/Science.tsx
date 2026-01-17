@@ -10,7 +10,8 @@ const researchPillars = [
         researcher: "Lave & Wenger (1991)",
         finding: "Knowledge is inseparable from the context in which it's learned. Learning in realistic contexts produces more transferable knowledge.",
         implication: "Avaia teaches through building real projects. Concepts are introduced when the project demands them, not in isolated lessons.",
-        link: "https://en.wikipedia.org/wiki/Situated_cognition"
+        link: "https://en.wikipedia.org/wiki/Situated_cognition",
+        image: "/images/3d-brain.png"
     },
     {
         icon: Zap,
@@ -18,7 +19,8 @@ const researchPillars = [
         researcher: "Manu Kapur (2008-2016)",
         finding: "Students who struggle with problems before receiving instruction outperform those who receive direct instruction first, even if they fail initially.",
         implication: "Sandbox exercises force failure before teaching. Learners attempt the Event Loop problem before learning what the Event Loop is.",
-        link: "https://en.wikipedia.org/wiki/Productive_failure"
+        link: "https://www.manukapur.com/productive-failure/",
+        image: "/images/3d-puzzle.png"
     },
     {
         icon: Shield,
@@ -26,7 +28,8 @@ const researchPillars = [
         researcher: "Robert Bjork (1994)",
         finding: "Conditions that make learning harder in the short term often lead to better long-term retention. Easy learning is forgettable learning.",
         implication: "Avaia never gives away answers. Hints progress from subtle to explicit. Verification requires explanation, not just working code.",
-        link: "https://bjorklab.psych.ucla.edu/research/"
+        link: "https://bjorklab.psych.ucla.edu/research/",
+        image: "/images/3d-code.png"
     },
     {
         icon: Activity,
@@ -34,7 +37,8 @@ const researchPillars = [
         researcher: "Butterfield & Metcalfe (2001)",
         finding: "High-confidence errors are more likely to be corrected and remembered than low-confidence errors after feedback.",
         implication: "Avaia tracks 'stubborn bugs' — mistakes made with high confidence. These get targeted remediation with contrasting cases.",
-        link: "https://psycnet.apa.org/record/2001-18222-006"
+        link: "https://psycnet.apa.org/record/2001-18222-006",
+        image: "/images/3d-growth.png"
     },
     {
         icon: BarChart,
@@ -42,7 +46,8 @@ const researchPillars = [
         researcher: "Jarrett Ye (2022)",
         finding: "The FSRS-5 algorithm outperforms SuperMemo SM-2 and Anki defaults by adapting to individual forgetting curves.",
         implication: "Reviews are scheduled optimally based on YOUR performance. Stability and difficulty are personalized per concept.",
-        link: "https://github.com/open-spaced-repetition/fsrs4anki"
+        link: "https://github.com/open-spaced-repetition/fsrs4anki",
+        image: "/images/3d-memory.png"
     },
     {
         icon: Users,
@@ -50,7 +55,8 @@ const researchPillars = [
         researcher: "Picard (1997), D'Mello (2012)",
         finding: "Emotional state significantly affects learning. Frustrated learners disengage. Bored learners stop paying attention.",
         implication: "Timing patterns reveal emotional state. Long pauses may mean struggling. Rapid responses may mean disengagement.",
-        link: "https://en.wikipedia.org/wiki/Affective_computing"
+        link: "https://en.wikipedia.org/wiki/Affective_computing",
+        image: "/images/3d-rocket.png"
     }
 ]
 
@@ -124,32 +130,45 @@ export default function Science() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.08 }}
-                                className="glass-card p-6 rounded-xl"
+                                className="glass-card rounded-xl overflow-hidden"
                             >
-                                <div className="flex items-start gap-4">
-                                    <pillar.icon className="text-primary flex-shrink-0" size={28} />
-                                    <div>
-                                        <h3 className="text-xl font-semibold mb-1">{pillar.title}</h3>
-                                        <p className="mono text-xs text-primary mb-3">{pillar.researcher}</p>
+                                {/* 3D Image Header */}
+                                <div className="h-40 relative overflow-hidden bg-gradient-to-br from-background to-card">
+                                    <img
+                                        src={pillar.image}
+                                        alt={pillar.title}
+                                        className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+                                </div>
 
-                                        <div className="mb-4">
-                                            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Finding</h4>
-                                            <p className="text-sm text-muted-foreground">{pillar.finding}</p>
+                                {/* Card Content */}
+                                <div className="p-6">
+                                    <div className="flex items-start gap-4">
+                                        <pillar.icon className="text-primary flex-shrink-0" size={28} />
+                                        <div>
+                                            <h3 className="text-xl font-semibold mb-1">{pillar.title}</h3>
+                                            <p className="mono text-xs text-primary mb-3">{pillar.researcher}</p>
+
+                                            <div className="mb-4">
+                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Finding</h4>
+                                                <p className="text-sm text-muted-foreground">{pillar.finding}</p>
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">In Avaia</h4>
+                                                <p className="text-sm">{pillar.implication}</p>
+                                            </div>
+
+                                            <a
+                                                href={pillar.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                            >
+                                                Learn more <ExternalLink size={12} />
+                                            </a>
                                         </div>
-
-                                        <div className="mb-4">
-                                            <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-1">In Avaia</h4>
-                                            <p className="text-sm">{pillar.implication}</p>
-                                        </div>
-
-                                        <a
-                                            href={pillar.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                                        >
-                                            Learn more <ExternalLink size={12} />
-                                        </a>
                                     </div>
                                 </div>
                             </motion.div>

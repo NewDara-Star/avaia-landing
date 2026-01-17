@@ -18,7 +18,7 @@ export function Header() {
         <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
             <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
                 <Link to="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-amber-600 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <span className="text-xl font-bold gradient-text">Avaia</span>
@@ -31,8 +31,8 @@ export function Header() {
                             key={item.path}
                             to={item.path}
                             className={`transition-colors ${location.pathname === item.path
-                                    ? 'text-primary font-medium'
-                                    : 'text-muted-foreground hover:text-foreground'
+                                ? 'text-primary font-medium'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             {item.label}
@@ -75,8 +75,8 @@ export function Header() {
                                 to={item.path}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={`text-sm py-2 transition-colors ${location.pathname === item.path
-                                        ? 'text-primary font-medium'
-                                        : 'text-muted-foreground hover:text-foreground'
+                                    ? 'text-primary font-medium'
+                                    : 'text-muted-foreground hover:text-foreground'
                                     }`}
                             >
                                 {item.label}

@@ -13,92 +13,93 @@
   --radius: 0.75rem;
 
   /* Light Mode - Clean, minimal, premium */
-  --background: oklch(0.985 0 0);
+  --background: oklch(0.985 0.008 140);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
 
-  /* Avaia Amber Accent */
-  --primary: oklch(0.75 0.15 75);
-  --primary-foreground: oklch(0.145 0 0);
+  /* Avaia Lime → Emerald */
+  --primary: oklch(0.65 0.20 140);
+  --primary-foreground: oklch(0.08 0 0);
 
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.96 0.01 140);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
+  --muted: oklch(0.96 0.01 140);
   --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.55 0.18 150);
+  --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.9 0 0);
-  --ring: oklch(0.75 0.15 75);
+  --border: oklch(0.88 0.02 140);
+  --input: oklch(0.88 0.02 140);
+  --ring: oklch(0.65 0.20 140);
 
   /* Charts */
-  --chart-1: oklch(0.75 0.15 75);
-  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-1: oklch(0.65 0.20 140);
+  --chart-2: oklch(0.55 0.18 150);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
 
   /* Sidebar */
-  --sidebar: oklch(0.985 0 0);
+  --sidebar: oklch(0.985 0.008 140);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.75 0.15 75);
-  --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-primary: oklch(0.65 0.20 140);
+  --sidebar-primary-foreground: oklch(0.08 0 0);
+  --sidebar-accent: oklch(0.96 0.01 140);
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.75 0.15 75);
+  --sidebar-border: oklch(0.88 0.02 140);
+  --sidebar-ring: oklch(0.65 0.20 140);
 
   /* Custom Avaia Variables */
-  --avaia-amber: oklch(0.78 0.16 75);
-  --avaia-amber-glow: oklch(0.78 0.16 75 / 25%);
-  --avaia-gradient-start: oklch(0.78 0.16 75);
-  --avaia-gradient-end: oklch(0.65 0.18 55);
+  --avaia-primary: oklch(0.70 0.22 135);
+  --avaia-accent: oklch(0.55 0.18 150);
+  --avaia-glow: oklch(0.65 0.20 140 / 25%);
+  --avaia-gradient-start: oklch(0.70 0.22 135);
+  --avaia-gradient-end: oklch(0.55 0.18 150);
 }
 
 .dark {
-  /* Dark Mode - Sophisticated, immersive */
-  --background: oklch(0.08 0 0);
+  /* Dark Mode - Deep emerald immersion */
+  --background: oklch(0.10 0.02 150);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.12 0 0);
+  --card: oklch(0.14 0.03 150);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.12 0 0);
+  --popover: oklch(0.14 0.03 150);
   --popover-foreground: oklch(0.98 0 0);
 
-  /* Avaia Amber Accent */
-  --primary: oklch(0.78 0.16 75);
+  /* Avaia Lime → Emerald */
+  --primary: oklch(0.70 0.22 135);
   --primary-foreground: oklch(0.08 0 0);
 
-  --secondary: oklch(0.18 0 0);
+  --secondary: oklch(0.18 0.03 150);
   --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.18 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.18 0 0);
+  --muted: oklch(0.18 0.03 150);
+  --muted-foreground: oklch(0.65 0.02 150);
+  --accent: oklch(0.55 0.18 150);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.25 0 0);
-  --ring: oklch(0.78 0.16 75);
+  --border: oklch(0.28 0.04 150);
+  --input: oklch(0.28 0.04 150);
+  --ring: oklch(0.70 0.22 135);
 
   /* Charts */
-  --chart-1: oklch(0.78 0.16 75);
-  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-1: oklch(0.70 0.22 135);
+  --chart-2: oklch(0.55 0.18 150);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
 
   /* Sidebar */
-  --sidebar: oklch(0.1 0 0);
+  --sidebar: oklch(0.12 0.02 150);
   --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.78 0.16 75);
+  --sidebar-primary: oklch(0.70 0.22 135);
   --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.18 0 0);
+  --sidebar-accent: oklch(0.18 0.03 150);
   --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.25 0 0);
-  --sidebar-ring: oklch(0.78 0.16 75);
+  --sidebar-border: oklch(0.28 0.04 150);
+  --sidebar-ring: oklch(0.70 0.22 135);
 }
 
 @theme inline {
@@ -142,8 +143,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Custom Avaia Colors */
-  --color-avaia-amber: var(--avaia-amber);
-  --color-avaia-amber-glow: var(--avaia-amber-glow);
+  --color-avaia-primary: var(--avaia-primary);
+  --color-avaia-lime: var(--avaia-lime);
+  --color-avaia-glow: var(--avaia-glow);
 }
 
 @layer base {
@@ -202,12 +204,12 @@ code,
 /* Glow Effect */
 .glow {
   box-shadow:
-    0 0 20px var(--avaia-amber-glow),
-    0 0 60px var(--avaia-amber-glow);
+    0 0 20px var(--avaia-glow),
+    0 0 60px var(--avaia-glow);
 }
 
 .glow-sm {
-  box-shadow: 0 0 20px var(--avaia-amber-glow);
+  box-shadow: 0 0 20px var(--avaia-glow);
 }
 
 /* Glass Morphism */
