@@ -1,29 +1,117 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 
-// Demo conversation showing Avaia's teaching methodology
-const demoMessages = [
+// Demo scenarios - Each shows different Avaia features
+const demoScenarios = [
     {
-        role: 'user' as const,
-        content: "I want to learn about closures in JavaScript",
-        delay: 0
+        id: 'closures',
+        title: 'Closures',
+        icon: '🔒',
+        messages: [
+            { role: 'user' as const, content: "I want to learn about closures in JavaScript" },
+            {
+                role: 'assistant' as const,
+                content: "Before I explain, let me check your understanding.",
+                annotation: "Productive Failure: Testing first"
+            },
+        ],
+        quiz: {
+            code: `function counter() {
+  let count = 0;
+  return function() {
+    count++;
+    return count;
+  };
+}
+const increment = counter();
+console.log(increment());
+console.log(increment());`,
+            question: "What will be logged?",
+            options: [
+                { text: "1, 1", correct: false },
+                { text: "1, 2", correct: true },
+                { text: "0, 1", correct: false },
+                { text: "undefined, undefined", correct: false }
+            ],
+            explanation: "The inner function **closes over** `count`, keeping it alive between calls. That's a closure!"
+        },
+        toolCalls: [
+            { tool: "check_understanding", args: "closures" },
+            { tool: "record_review", args: "stability: 0.4, difficulty: 0.6" }
+        ]
     },
     {
-        role: 'assistant' as const,
-        content: "Before I explain, let me check your current understanding. Here's a code prediction:\n\n```javascript\nfunction counter() {\n  let count = 0;\n  return function() {\n    count++;\n    return count;\n  };\n}\nconst increment = counter();\nconsole.log(increment());\nconsole.log(increment());\n```\n\n**What will be logged?**",
-        delay: 1500
+        id: 'events',
+        title: 'Events',
+        icon: '🎯',
+        messages: [
+            { role: 'user' as const, content: "How does event delegation work?" },
+            {
+                role: 'assistant' as const,
+                content: "Great question! Before I explain, try this sandbox.",
+                annotation: "Just-in-time Learning"
+            },
+        ],
+        quiz: {
+            code: `document.body.addEventListener('click', (e) => {
+  if (e.target.matches('.btn')) {
+    console.log('Button clicked!');
+  }
+});
+
+// Later, dynamically added:
+const btn = document.createElement('button');
+btn.className = 'btn';
+document.body.appendChild(btn);
+btn.click();`,
+            question: "Will 'Button clicked!' log?",
+            options: [
+                { text: "Yes", correct: true },
+                { text: "No", correct: false },
+                { text: "Error", correct: false },
+                { text: "undefined", correct: false }
+            ],
+            explanation: "Event delegation works by listening on a parent — even for elements added **after** the listener!"
+        },
+        toolCalls: [
+            { tool: "get_prerequisites", args: "event_delegation" },
+            { tool: "log_misconception", args: "thought events only work on existing elements" }
+        ]
     },
     {
-        role: 'user' as const,
-        content: "I think it logs 1, then 1 again?",
-        delay: 4000
-    },
-    {
-        role: 'assistant' as const,
-        content: "Interesting! That's a common misconception. The output is actually **1, then 2**.\n\nThis reveals something important: the inner function \"closes over\" the `count` variable, keeping it alive between calls. That's exactly what a closure is.\n\n*Logging this for your spaced repetition queue...*",
-        delay: 5500
+        id: 'async',
+        title: 'Async',
+        icon: '⏳',
+        messages: [
+            { role: 'user' as const, content: "Why does my async code run out of order?" },
+            {
+                role: 'assistant' as const,
+                content: "Let's diagnose this together.",
+                annotation: "Anti-Sycophancy: No immediate answer"
+            },
+        ],
+        quiz: {
+            code: `console.log('1');
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => console.log('3'));
+console.log('4');`,
+            question: "What order will these log?",
+            options: [
+                { text: "1, 2, 3, 4", correct: false },
+                { text: "1, 4, 3, 2", correct: true },
+                { text: "1, 4, 2, 3", correct: false },
+                { text: "1, 3, 2, 4", correct: false }
+            ],
+            explanation: "Microtasks (Promises) run before macrotasks (setTimeout). Event loop 101!"
+        },
+        toolCalls: [
+            { tool: "identify_stubborn_bug", args: "async_ordering" },
+            { tool: "schedule_remediation", args: "event_loop concept" }
+        ]
     }
 ]
+
+
 
 function TypingIndicator() {
     return (
@@ -47,26 +135,189 @@ function TypingIndicator() {
     )
 }
 
-function Message({ role, content, isTyping = false }: {
+function ToolCallSimulation({ tool, args, delay }: { tool: string; args: string; delay: number }) {
+    const [visible, setVisible] = useState(false)
+    const [complete, setComplete] = useState(false)
+
+    useEffect(() => {
+        const showTimer = setTimeout(() => setVisible(true), delay)
+        const completeTimer = setTimeout(() => setComplete(true), delay + 800)
+        return () => {
+            clearTimeout(showTimer)
+            clearTimeout(completeTimer)
+        }
+    }, [delay])
+
+    if (!visible) return null
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 text-xs font-mono py-1"
+        >
+            <motion.div
+                animate={complete ? {} : { rotate: 360 }}
+                transition={{ duration: 1, repeat: complete ? 0 : Infinity, ease: "linear" }}
+                className="w-3 h-3"
+            >
+                {complete ? (
+                    <span className="text-green-400">✓</span>
+                ) : (
+                    <span className="text-primary">⟳</span>
+                )}
+            </motion.div>
+            <span className="text-muted-foreground">
+                <span className="text-primary">{tool}</span>({args})
+            </span>
+        </motion.div>
+    )
+}
+
+function FloatingAnnotation({ text, position }: { text: string; position: 'left' | 'right' }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: position === 'left' ? 20 : -20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className={`absolute ${position === 'left' ? '-left-2 -translate-x-full' : '-right-2 translate-x-full'} top-1/2 -translate-y-1/2 hidden lg:block`}
+        >
+            <div className="bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-lg px-3 py-2 text-xs text-primary max-w-[160px]">
+                <div className="flex items-center gap-1.5">
+                    <span className="text-primary">✦</span>
+                    <span>{text}</span>
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
+function InteractiveCodeBlock({
+    code,
+    onLineHover
+}: {
+    code: string
+    onLineHover?: (line: number | null) => void
+}) {
+    const lines = code.split('\n')
+    const [hoveredLine, setHoveredLine] = useState<number | null>(null)
+    const [isEditing, setIsEditing] = useState(false)
+    const [editedCode, setEditedCode] = useState(code)
+
+    return (
+        <div className="relative group my-2 rounded-lg bg-secondary overflow-hidden">
+            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className="px-2 py-1 text-xs rounded bg-primary/20 hover:bg-primary/40 text-primary transition-colors"
+                >
+                    {isEditing ? 'View' : 'Edit'}
+                </button>
+                <button
+                    className="px-2 py-1 text-xs rounded bg-green-500/20 hover:bg-green-500/40 text-green-400 transition-colors"
+                    onClick={() => alert('Output: 1\\n2')}
+                >
+                    ▶ Run
+                </button>
+            </div>
+
+            {isEditing ? (
+                <textarea
+                    value={editedCode}
+                    onChange={(e) => setEditedCode(e.target.value)}
+                    className="w-full h-full p-3 bg-transparent text-xs font-mono text-muted-foreground resize-none focus:outline-none"
+                    rows={lines.length + 1}
+                />
+            ) : (
+                <pre className="p-3 text-xs overflow-x-auto">
+                    {lines.map((line, i) => (
+                        <div
+                            key={i}
+                            onMouseEnter={() => {
+                                setHoveredLine(i)
+                                onLineHover?.(i)
+                            }}
+                            onMouseLeave={() => {
+                                setHoveredLine(null)
+                                onLineHover?.(null)
+                            }}
+                            className={`font-mono transition-colors ${hoveredLine === i ? 'bg-primary/10 -mx-3 px-3' : ''
+                                }`}
+                        >
+                            <span className="text-muted-foreground/50 select-none mr-3 w-4 inline-block text-right">
+                                {i + 1}
+                            </span>
+                            <code className="text-muted-foreground">{line}</code>
+                        </div>
+                    ))}
+                </pre>
+            )}
+        </div>
+    )
+}
+
+function QuizOptions({
+    options,
+    onAnswer,
+    disabled
+}: {
+    options: { text: string; correct: boolean }[]
+    onAnswer: (correct: boolean) => void
+    disabled: boolean
+}) {
+    const [selected, setSelected] = useState<number | null>(null)
+    const [showResult, setShowResult] = useState(false)
+
+    const handleSelect = (index: number, correct: boolean) => {
+        if (disabled || showResult) return
+        setSelected(index)
+        setShowResult(true)
+        onAnswer(correct)
+    }
+
+    return (
+        <div className="grid grid-cols-2 gap-2 my-3">
+            {options.map((option, i) => (
+                <motion.button
+                    key={i}
+                    whileHover={!disabled && !showResult ? { scale: 1.02 } : {}}
+                    whileTap={!disabled && !showResult ? { scale: 0.98 } : {}}
+                    onClick={() => handleSelect(i, option.correct)}
+                    disabled={disabled || showResult}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${showResult
+                        ? option.correct
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                            : selected === i
+                                ? 'bg-red-500/20 text-red-400 border border-red-500/50'
+                                : 'bg-secondary/50 text-muted-foreground'
+                        : 'bg-secondary hover:bg-accent text-foreground border border-transparent hover:border-primary/30'
+                        }`}
+                >
+                    {option.text}
+                    {showResult && option.correct && <span className="ml-2">✓</span>}
+                    {showResult && selected === i && !option.correct && <span className="ml-2">✗</span>}
+                </motion.button>
+            ))}
+        </div>
+    )
+}
+
+function Message({
+    role,
+    content,
+    isTyping = false,
+    annotation
+}: {
     role: 'user' | 'assistant'
     content: string
     isTyping?: boolean
+    annotation?: string
 }) {
     const isUser = role === 'user'
 
-    // Simple markdown-like rendering for code blocks
     const renderContent = (text: string) => {
-        const parts = text.split(/(```[\s\S]*?```|\*\*[\s\S]*?\*\*|\*[\s\S]*?\*)/g)
-
+        const parts = text.split(/(\*\*[\s\S]*?\*\*|\*[\s\S]*?\*)/g)
         return parts.map((part, i) => {
-            if (part.startsWith('```') && part.endsWith('```')) {
-                const code = part.slice(3, -3).replace(/^javascript\n?/, '')
-                return (
-                    <pre key={i} className="my-2 p-3 rounded-lg bg-secondary text-xs overflow-x-auto">
-                        <code className="text-muted-foreground font-mono">{code}</code>
-                    </pre>
-                )
-            }
             if (part.startsWith('**') && part.endsWith('**')) {
                 return <strong key={i} className="font-semibold text-primary">{part.slice(2, -2)}</strong>
             }
@@ -82,8 +333,12 @@ function Message({ role, content, isTyping = false }: {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-3`}
+            className={`relative flex ${isUser ? 'justify-end' : 'justify-start'} mb-3`}
         >
+            {annotation && !isUser && (
+                <FloatingAnnotation text={annotation} position="left" />
+            )}
+
             {!isUser && (
                 <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center text-primary-foreground text-xs font-bold mr-2 flex-shrink-0">
                     A
@@ -102,41 +357,75 @@ function Message({ role, content, isTyping = false }: {
 }
 
 export function ProductDemo() {
-    const [visibleMessages, setVisibleMessages] = useState<number>(0)
-    const [isTyping, setIsTyping] = useState(false)
-    const [hasStarted, setHasStarted] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [activeScenario, setActiveScenario] = useState(0)
+    const [phase, setPhase] = useState<'intro' | 'quiz' | 'result'>('intro')
+    const [showToolCalls, setShowToolCalls] = useState(false)
+    const [userInput, setUserInput] = useState('')
+    const [isTypingResponse, setIsTypingResponse] = useState(false)
+    const [userAnsweredCorrect, setUserAnsweredCorrect] = useState<boolean | null>(null)
 
+    // 3D tilt effect
+    const mouseX = useMotionValue(0)
+    const mouseY = useMotionValue(0)
+    const rotateX = useSpring(useTransform(mouseY, [-200, 200], [5, -5]), { stiffness: 100, damping: 20 })
+    const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-5, 5]), { stiffness: 100, damping: 20 })
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!containerRef.current) return
+        const rect = containerRef.current.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+        mouseX.set(e.clientX - centerX)
+        mouseY.set(e.clientY - centerY)
+    }
+
+    const handleMouseLeave = () => {
+        mouseX.set(0)
+        mouseY.set(0)
+    }
+
+    const scenario = demoScenarios[activeScenario]
+
+    // Auto-advance phases
     useEffect(() => {
-        // Start animation when component comes into view
-        const timer = setTimeout(() => setHasStarted(true), 500)
-        return () => clearTimeout(timer)
-    }, [])
-
-    useEffect(() => {
-        if (!hasStarted) return
-        if (visibleMessages >= demoMessages.length) return
-
-        const nextMessage = demoMessages[visibleMessages]
-        const isAssistant = nextMessage.role === 'assistant'
-
-        if (isAssistant) {
-            // Show typing indicator first
-            setIsTyping(true)
-            const typingTimer = setTimeout(() => {
-                setIsTyping(false)
-                setVisibleMessages(prev => prev + 1)
-            }, 1500)
-            return () => clearTimeout(typingTimer)
-        } else {
-            const messageTimer = setTimeout(() => {
-                setVisibleMessages(prev => prev + 1)
-            }, nextMessage.delay)
-            return () => clearTimeout(messageTimer)
+        if (phase === 'intro') {
+            const timer = setTimeout(() => setPhase('quiz'), 2000)
+            return () => clearTimeout(timer)
         }
-    }, [visibleMessages, hasStarted])
+    }, [phase, activeScenario])
+
+    // Handle user typing simulation
+    const handleSendMessage = () => {
+        if (!userInput.trim()) return
+        setIsTypingResponse(true)
+        setUserInput('')
+
+        setTimeout(() => {
+            setIsTypingResponse(false)
+            setPhase('quiz')
+        }, 1500)
+    }
+
+    const handleQuizAnswer = (correct: boolean) => {
+        setUserAnsweredCorrect(correct)
+        setShowToolCalls(true)
+        setTimeout(() => setPhase('result'), 500)
+    }
+
+    const handleScenarioChange = (index: number) => {
+        setActiveScenario(index)
+        setPhase('intro')
+        setShowToolCalls(false)
+        setUserAnsweredCorrect(null)
+    }
 
     return (
         <motion.div
+            ref={containerRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY, transformPerspective: 1000 }}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -152,43 +441,65 @@ export function ProductDemo() {
                 </div>
                 <div className="flex-1 text-center">
                     <span className="text-sm font-medium text-foreground">Avaia</span>
-                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary">Tutor</span>
+                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary">Interactive Demo</span>
                 </div>
-                <div className="w-14" /> {/* Spacer for centering */}
+                <div className="w-14" />
             </div>
 
-            {/* App Layout - responsive height and sidebar hidden on mobile */}
+            {/* Scenario Tabs */}
+            <div className="flex border-b border-border bg-card/50">
+                {demoScenarios.map((s, i) => (
+                    <button
+                        key={s.id}
+                        onClick={() => handleScenarioChange(i)}
+                        className={`flex-1 px-4 py-2 text-sm font-medium transition-all ${activeScenario === i
+                            ? 'text-primary border-b-2 border-primary bg-primary/5'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                            }`}
+                    >
+                        <span className="mr-1.5">{s.icon}</span>
+                        {s.title}
+                    </button>
+                ))}
+            </div>
+
+            {/* App Layout */}
             <div className="flex h-[350px] sm:h-[420px] md:h-[480px] bg-background">
-                {/* Sidebar - hidden on mobile */}
+                {/* Sidebar - MCP Tool Calls */}
                 <div className="hidden md:flex w-48 lg:w-56 border-r border-border bg-card/50 flex-col">
-                    <div className="p-3">
-                        <button className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary hover:bg-accent text-sm font-medium transition-colors">
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M12 5v14M5 12h14" />
-                            </svg>
-                            New chat
-                        </button>
+                    <div className="p-3 border-b border-border">
+                        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                            MCP Tool Calls
+                        </div>
                     </div>
 
-                    <div className="flex-1 overflow-hidden px-2">
-                        <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-3 py-2">
-                            Today
-                        </div>
-                        <div className="px-3 py-2 rounded-lg bg-accent text-sm truncate">
-                            Learning about closures
-                        </div>
-                        <div className="px-3 py-2 text-sm text-muted-foreground truncate hover:bg-accent/50 rounded-lg cursor-pointer transition-colors">
-                            Event delegation basics
-                        </div>
-                        <div className="px-3 py-2 text-sm text-muted-foreground truncate hover:bg-accent/50 rounded-lg cursor-pointer transition-colors">
-                            Memory game project
-                        </div>
+                    <div className="flex-1 overflow-y-auto p-3">
+                        <AnimatePresence>
+                            {showToolCalls && scenario.toolCalls.map((tc, i) => (
+                                <ToolCallSimulation
+                                    key={`${scenario.id}-${tc.tool}`}
+                                    tool={tc.tool}
+                                    args={tc.args}
+                                    delay={i * 400}
+                                />
+                            ))}
+                        </AnimatePresence>
+
+                        {!showToolCalls && (
+                            <div className="text-xs text-muted-foreground italic">
+                                Answer the quiz to see tool calls...
+                            </div>
+                        )}
                     </div>
 
                     <div className="p-3 border-t border-border">
                         <div className="flex items-center gap-2 text-xs">
-                            <div className="w-2 h-2 rounded-full bg-green-500" />
-                            <span className="text-muted-foreground">Connected</span>
+                            <motion.div
+                                className="w-2 h-2 rounded-full bg-green-500"
+                                animate={{ opacity: [1, 0.5, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            />
+                            <span className="text-muted-foreground">MCP Connected</span>
                         </div>
                     </div>
                 </div>
@@ -197,11 +508,68 @@ export function ProductDemo() {
                 <div className="flex-1 flex flex-col min-w-0">
                     {/* Messages */}
                     <div className="flex-1 overflow-y-auto p-3 sm:p-4">
-                        <AnimatePresence>
-                            {demoMessages.slice(0, visibleMessages).map((msg, i) => (
-                                <Message key={i} role={msg.role} content={msg.content} />
+                        <AnimatePresence mode="wait">
+                            {/* Initial messages */}
+                            {scenario.messages.map((msg, i) => (
+                                <Message
+                                    key={`${scenario.id}-${i}`}
+                                    role={msg.role}
+                                    content={msg.content}
+                                    annotation={msg.annotation}
+                                />
                             ))}
-                            {isTyping && (
+
+                            {/* Quiz Phase */}
+                            {phase === 'quiz' && (
+                                <motion.div
+                                    key="quiz"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="ml-8"
+                                >
+                                    <InteractiveCodeBlock code={scenario.quiz.code} />
+                                    <p className="text-sm font-medium text-primary my-2">
+                                        {scenario.quiz.question}
+                                    </p>
+                                    <QuizOptions
+                                        options={scenario.quiz.options}
+                                        onAnswer={handleQuizAnswer}
+                                        disabled={false}
+                                    />
+                                </motion.div>
+                            )}
+
+                            {/* Result Phase */}
+                            {phase === 'result' && (
+                                <motion.div
+                                    key="result"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="ml-8"
+                                >
+                                    <div className={`p-3 rounded-lg mb-3 ${userAnsweredCorrect
+                                        ? 'bg-green-500/10 border border-green-500/30'
+                                        : 'bg-amber-500/10 border border-amber-500/30'
+                                        }`}>
+                                        <p className="text-sm">
+                                            {userAnsweredCorrect
+                                                ? '✓ Correct! '
+                                                : '✗ Not quite. '}
+                                            {scenario.quiz.explanation.split('**').map((part, i) =>
+                                                i % 2 === 1
+                                                    ? <strong key={i} className="text-primary">{part}</strong>
+                                                    : <span key={i}>{part}</span>
+                                            )}
+                                        </p>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground italic">
+                                        *Logged to your spaced repetition queue...*
+                                    </p>
+                                </motion.div>
+                            )}
+
+                            {/* Typing indicator */}
+                            {isTypingResponse && (
                                 <Message role="assistant" content="" isTyping />
                             )}
                         </AnimatePresence>
@@ -212,24 +580,23 @@ export function ProductDemo() {
                         <div className="flex items-center gap-2 bg-secondary rounded-2xl px-3 sm:px-4 py-2 sm:py-3">
                             <input
                                 type="text"
-                                placeholder="Message Avaia..."
+                                value={userInput}
+                                onChange={(e) => setUserInput(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                                placeholder="Try typing a response..."
                                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground min-w-0"
-                                disabled
                             />
-                            <button className="p-1.5 sm:p-2 rounded-full hover:bg-accent transition-colors flex-shrink-0" disabled>
-                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                                </svg>
-                            </button>
-                            <button className="p-1.5 sm:p-2 rounded-full bg-primary text-primary-foreground flex-shrink-0" disabled>
+                            <button
+                                onClick={handleSendMessage}
+                                className="p-1.5 sm:p-2 rounded-full bg-primary text-primary-foreground flex-shrink-0 hover:opacity-90 transition-opacity"
+                            >
                                 <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                                 </svg>
                             </button>
                         </div>
                         <p className="text-xs text-muted-foreground text-center mt-2 hidden sm:block">
-                            Avaia uses spaced repetition to ensure lasting knowledge
+                            Click answers above or type to interact • 3D tilt: move your mouse
                         </p>
                     </div>
                 </div>
