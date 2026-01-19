@@ -127,7 +127,7 @@ export default function Curriculum() {
                         </div>
                         <div className="flex items-center gap-2">
                             <Code className="text-primary" size={18} />
-                            <span className="text-muted-foreground">35 concepts</span>
+                            <span className="text-muted-foreground">100+ concepts</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Zap className="text-primary" size={18} />

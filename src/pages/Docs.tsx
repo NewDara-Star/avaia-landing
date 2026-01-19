@@ -43,55 +43,50 @@ function CodeBlock({ code, title }: { code: string; title?: string }) {
 const steps = [
     {
         number: 1,
-        title: "Install Avaia globally",
-        description: "Install the CLI tool from npm",
-        code: "npm install -g @newdara/avaia"
+        title: "Install Claude CLI",
+        description: "The official CLI for Claude Code",
+        code: "curl -fsSL https://claude.ai/install.sh | bash"
     },
     {
         number: 2,
-        title: "Initialize Avaia",
-        description: "Creates ~/.avaia directory with system prompt",
-        code: "avaia init"
+        title: "Add Avaia MCP server",
+        description: "Register Avaia as an MCP server (auto-installs via npx)",
+        code: "claude mcp add avaia -- npx @newdara/avaia"
     },
     {
         number: 3,
-        title: "Seed the curriculum",
-        description: "Loads 35 concepts, 33 misconceptions, 6 sandboxes",
-        code: "avaia seed"
+        title: "Authenticate",
+        description: "Login with Claude account or use API key",
+        code: "claude login\n# OR: export ANTHROPIC_API_KEY=\"sk-...\""
     },
     {
         number: 4,
-        title: "Configure Claude Code MCP",
-        description: "Add Avaia as an MCP server to Claude Code",
-        code: null,
-        config: true
-    },
-    {
-        number: 5,
         title: "Start learning!",
-        description: "Launch a session from your project directory",
-        code: "avaia"
+        description: "Launch Claude with Avaia's 53 pedagogical tools",
+        code: "claude"
     }
 ]
 
-const mcpConfig = `{
+const mcpConfig = `# Alternative: Manual MCP config
+# Add to ~/.claude/settings.json
+
+{
   "mcpServers": {
     "avaia": {
-      "command": "node",
-      "args": [
-        "/path/to/global/node_modules/@newdara/avaia/dist/server/index.js"
-      ]
+      "command": "npx",
+      "args": ["@newdara/avaia"]
     }
   }
 }`
 
 const tools = [
-    { category: "Session (13)", tools: ["get_current_time", "infer_emotional_state", "log_message_timing", "log_session", "get_exit_ticket", "should_prompt_questions", "log_learner_question", "log_emotional_checkin", "get_intervention", "end_session", "get_session_summary", "get_question_patterns", "start_session"] },
-    { category: "Project (8)", tools: ["get_project_state", "advance_milestone", "get_next_step", "create_learner", "get_learner_profile", "complete_onboarding", "start_project"] },
+    { category: "Session (14)", tools: ["start_session", "end_session", "get_current_time", "infer_emotional_state", "log_message_timing", "log_session", "get_exit_ticket", "should_prompt_questions", "log_learner_question", "log_emotional_checkin", "get_intervention", "get_session_summary", "get_question_patterns", "get_chat_history"] },
+    { category: "Project (9)", tools: ["get_project_state", "advance_milestone", "get_next_step", "create_learner", "get_learner_profile", "complete_onboarding", "start_project", "update_learning_preferences", "get_known_terms"] },
     { category: "Content (8)", tools: ["introduce_concept", "get_hint", "log_help_request", "get_prerequisites", "get_weak_prerequisites", "get_visualization", "log_confidence", "get_known_terms"] },
     { category: "SRS (3)", tools: ["get_due_reviews", "log_review", "get_refactoring_challenge"] },
-    { category: "Verification (10)", tools: ["get_diagnostic_question", "verify_concept", "get_contrasting_case", "get_discrimination_question", "flag_stubborn_bug", "log_diagnostic_result", "log_exit_ticket_result", "get_remediation", "get_stubborn_bugs"] },
-    { category: "Sandbox (5)", tools: ["trigger_sandbox", "evaluate_sandbox_attempt", "log_sandbox_reflection", "log_sandbox_attempt", "get_sandbox_summary"] }
+    { category: "Verification (9)", tools: ["get_diagnostic_question", "verify_concept", "get_contrasting_case", "get_discrimination_question", "flag_stubborn_bug", "log_diagnostic_result", "log_exit_ticket_result", "get_remediation", "get_stubborn_bugs"] },
+    { category: "Sandbox (5)", tools: ["trigger_sandbox", "evaluate_sandbox_attempt", "log_sandbox_reflection", "log_sandbox_attempt", "get_sandbox_summary"] },
+    { category: "Track (5)", tools: ["get_available_tracks", "get_track_details", "select_track", "get_track_progress", "get_recommended_track"] }
 ]
 
 export default function Docs() {
@@ -249,11 +244,11 @@ export default function Docs() {
                         className="flex items-center gap-3 mb-8"
                     >
                         <Zap className="text-primary" size={24} />
-                        <h2 className="text-3xl font-bold">47 MCP Tools</h2>
+                        <h2 className="text-3xl font-bold">53 MCP Tools</h2>
                     </motion.div>
 
                     <p className="text-muted-foreground mb-8">
-                        Avaia exposes 47 tools that give Claude pedagogical superpowers. Here's a sample by category:
+                        Avaia exposes 53 tools that give Claude pedagogical superpowers. Here's a sample by category:
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-4">
@@ -311,10 +306,10 @@ export default function Docs() {
 
                     <div className="space-y-4">
                         {[
-                            { cmd: "avaia init", desc: "Initialize ~/.avaia directory with system prompt" },
-                            { cmd: "avaia seed", desc: "Seed database with curriculum (concepts, sandboxes, misconceptions)" },
-                            { cmd: "avaia help", desc: "Show available commands" },
-                            { cmd: "avaia", desc: "Start a learning session (wraps Claude Code)" }
+                            { cmd: "npx @newdara/avaia", desc: "Run MCP server (for claude mcp add)" },
+                            { cmd: "npx @newdara/avaia-teach", desc: "Enhanced Claude wrapper with timing injection" },
+                            { cmd: "claude mcp add avaia -- npx @newdara/avaia", desc: "Register Avaia as MCP server" },
+                            { cmd: "claude", desc: "Start a learning session with Claude" }
                         ].map((item, i) => (
                             <motion.div
                                 key={item.cmd}

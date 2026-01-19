@@ -68,10 +68,10 @@ const principles = [
 ]
 
 const stats = [
-    { value: "47", label: "MCP Tools" },
-    { value: "35", label: "Concepts" },
-    { value: "6", label: "Sandbox Exercises" },
-    { value: "33", label: "Misconceptions Tracked" }
+    { value: "53", label: "MCP Tools" },
+    { value: "7", label: "Learning Tracks" },
+    { value: "100+", label: "Concepts" },
+    { value: "6", label: "Sandbox Exercises" }
 ]
 
 export default function Home() {
@@ -152,7 +152,7 @@ export default function Home() {
                         >
                             <div className="inline-flex items-center gap-3 glass-card px-6 py-4 rounded-xl">
                                 <code className="font-mono text-sm text-muted-foreground">
-                                    <span className="text-primary">$</span> npm install -g @newdara/avaia
+                                    <span className="text-primary">$</span> claude mcp add avaia -- npx @newdara/avaia
                                 </code>
                             </div>
                         </motion.div>
@@ -354,10 +354,10 @@ export default function Home() {
                         className="text-center mb-16"
                     >
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-                            Native <span className="gradient-text">macOS App</span>
+                            Desktop <span className="gradient-text">App</span>
                         </h2>
                         <p className="text-lg text-muted-foreground">
-                            A beautiful ChatGPT-like interface for your tutoring sessions
+                            A beautiful ChatGPT-like interface with setup wizard and dashboard
                         </p>
                     </motion.div>
 
@@ -373,7 +373,7 @@ export default function Home() {
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold">Avaia.app</h3>
-                                <p className="text-sm text-muted-foreground">Native experience</p>
+                                <p className="text-sm text-muted-foreground">Web-based with native wrapper</p>
                             </div>
                         </div>
 
@@ -383,19 +383,19 @@ export default function Home() {
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                        <span><strong className="text-foreground">Chat interface</strong> — Like ChatGPT, but for learning</span>
+                                        <span><strong className="text-foreground">Setup wizard</strong> — Guided onboarding for new users</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                        <span><strong className="text-foreground">Suggestion cards</strong> — Quick actions to start learning</span>
+                                        <span><strong className="text-foreground">Dashboard</strong> — Track progress, reviews, and projects</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                        <span><strong className="text-foreground">Markdown rendering</strong> — Code blocks with syntax highlighting</span>
+                                        <span><strong className="text-foreground">SRS reviews</strong> — Interactive spaced repetition cards</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                        <span><strong className="text-foreground">Real-time streaming</strong> — See responses as they come</span>
+                                        <span><strong className="text-foreground">Real-time chat</strong> — Streaming responses with syntax highlighting</span>
                                     </li>
                                 </ul>
                             </div>
@@ -403,10 +403,10 @@ export default function Home() {
                                 <h4 className="font-semibold mb-3 text-primary">Quick Start</h4>
                                 <div className="glass-card p-4 rounded-lg font-mono text-sm space-y-1">
                                     <p><span className="text-primary">$</span> <span className="text-muted-foreground">cd gui</span></p>
-                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">./run.sh</span></p>
-                                    <p className="pt-2 text-xs text-muted-foreground/70">Opens at http://127.0.0.1:5050</p>
-                                    <p className="pt-2 text-xs text-muted-foreground/70 italic">Or build the native app:</p>
-                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">./build.sh</span></p>
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">pip install -r requirements.txt</span></p>
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">python server_webview.py</span></p>
+                                    <p className="pt-2 text-xs text-muted-foreground/70">Or build the native app:</p>
+                                    <p><span className="text-primary">$</span> <span className="text-muted-foreground">./build_webview.sh</span></p>
                                 </div>
                             </div>
                         </div>
@@ -446,7 +446,7 @@ export default function Home() {
                                 <ul className="space-y-3 text-sm text-muted-foreground">
                                     <li className="flex items-center gap-3">
                                         <div className="w-2 h-2 rounded-full bg-primary" />
-                                        <span><strong className="text-foreground">MCP Server</strong> — 47 pedagogical tools</span>
+                                        <span><strong className="text-foreground">MCP Server</strong> — 53 pedagogical tools</span>
                                     </li>
                                     <li className="flex items-center gap-3">
                                         <div className="w-2 h-2 rounded-full bg-primary" />
@@ -524,13 +524,13 @@ export default function Home() {
 
                         <div className="glass-card p-8 rounded-2xl text-left mb-8">
                             <code className="font-mono text-sm block space-y-2">
-                                <div className="text-muted-foreground"># Install globally</div>
-                                <div><span className="text-primary">$</span> npm install -g @newdara/avaia</div>
-                                <div className="pt-3 text-muted-foreground"># Initialize and seed curriculum</div>
-                                <div><span className="text-primary">$</span> avaia init</div>
-                                <div><span className="text-primary">$</span> avaia seed</div>
-                                <div className="pt-3 text-muted-foreground"># Configure Claude Code MCP, then start</div>
-                                <div><span className="text-primary">$</span> avaia</div>
+                                <div className="text-muted-foreground"># Install Claude CLI</div>
+                                <div><span className="text-primary">$</span> curl -fsSL https://claude.ai/install.sh | bash</div>
+                                <div className="pt-3 text-muted-foreground"># Add Avaia as MCP server</div>
+                                <div><span className="text-primary">$</span> claude mcp add avaia -- npx @newdara/avaia</div>
+                                <div className="pt-3 text-muted-foreground"># Authenticate and start</div>
+                                <div><span className="text-primary">$</span> claude login</div>
+                                <div><span className="text-primary">$</span> claude</div>
                             </code>
                         </div>
 
