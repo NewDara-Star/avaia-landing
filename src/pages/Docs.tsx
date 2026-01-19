@@ -67,18 +67,6 @@ const steps = [
     }
 ]
 
-const mcpConfig = `# Alternative: Manual MCP config
-# Add to ~/.claude/settings.json
-
-{
-  "mcpServers": {
-    "avaia": {
-      "command": "npx",
-      "args": ["@newdara/avaia"]
-    }
-  }
-}`
-
 const tools = [
     { category: "Session (14)", tools: ["start_session", "end_session", "get_current_time", "infer_emotional_state", "log_message_timing", "log_session", "get_exit_ticket", "should_prompt_questions", "log_learner_question", "log_emotional_checkin", "get_intervention", "get_session_summary", "get_question_patterns", "get_chat_history"] },
     { category: "Project (9)", tools: ["get_project_state", "advance_milestone", "get_next_step", "create_learner", "get_learner_profile", "complete_onboarding", "start_project", "update_learning_preferences", "get_known_terms"] },
@@ -150,18 +138,6 @@ export default function Docs() {
                                 {step.code && (
                                     <div className="ml-12">
                                         <CodeBlock code={step.code} />
-                                    </div>
-                                )}
-
-                                {step.config && (
-                                    <div className="ml-12">
-                                        <p className="text-sm text-muted-foreground mb-3">
-                                            Add to <code className="mono text-primary">~/.claude/settings.json</code> or your Claude Code MCP config:
-                                        </p>
-                                        <CodeBlock code={mcpConfig} title="~/.claude/settings.json" />
-                                        <p className="text-xs text-muted-foreground mt-3">
-                                            To find the path, run: <code className="mono">npm root -g</code>
-                                        </p>
                                     </div>
                                 )}
                             </motion.div>
